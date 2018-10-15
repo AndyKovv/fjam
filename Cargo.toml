@@ -6,12 +6,11 @@ authors = ["Andriy Kovalov <andy.kovv@gmail.com>"]
 [dependencies]
 gotham = "0.2.1"
 gotham_derive = "0.2.1"
-gotham_middleware_diesel = "0.2.1"
-
+borrow-bag = "0.4.0"
 log = "0.4.5"
 
-diesel = { version = "1.0.0", features = ["sqlite"] }
-diesel_migrations = { version = "1.0.0", features = ["sqlite"] }
+diesel = { version = "1.0.0", features = ["postgres"] }
+diesel_migrations = { version = "1.0.0", features = ["postgres"] }
 r2d2 = "0.8.2"
 r2d2-diesel = "1.0.0"
 
@@ -20,4 +19,3 @@ mime = "0.3"
 futures = "0.1"
 serde = "1"
 serde_derive = "1"
-serde_derive = "1.0"

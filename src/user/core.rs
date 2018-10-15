@@ -1,4 +1,10 @@
 
+use user::models::NewUserProfile;
+use diesel;
+use diesel::prelude::*;
+use diesel::pg::PgConnection;
+use schema::user_profiles;
+
 #[derive(Deserialize, StateData, StaticResponseExtender)]
 pub struct UserIdExtractor {
     id: usize,
@@ -24,5 +30,30 @@ impl UserProfile {
         // To future - Here we can use cache structures.
         // Like get data from cache not from database.
         // Make like adapter for get by id
+    }
+}
+
+pub fn create_test_user<S>(name: S, second_name: S, email: S) -> Result<usize, diesel::result::Error>
+    where S: Into<String> {
+        // let manger = ConnectionManager::new("/var/www/fjam/fjam.db");
+        let conn = PgConnection::establish("/var/www/fjam/fjam.db")
+            .unwrap_or_else(|_| panic!("Error connecting to {}", "/var/www/fjam/fjam.db"));
+
+        let new_user = NewUserProfile {
+            name: name.into(),
+            second_name: second_name.into(),
+            email: email.into(),
+        };
+        diesel::insert_into(user_profiles::table).values(&new_user).execute(&conn)
+    }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_should_add_user_to_database() {
+        let _user_id = create_test_user("Andy", "Kovv", "andy.kovv@gmail.com").map_err(|_| panic!("{:?}", "User not created"));
+        // assert_eq!(user_id, 1);
     }
 }
