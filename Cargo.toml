@@ -7,7 +7,9 @@ authors = ["Andriy Kovalov <andy.kovv@gmail.com>"]
 gotham = "0.2.1"
 gotham_derive = "0.2.1"
 borrow-bag = "0.4.0"
+
 log = "0.4.5"
+dotenv = "0.13.0"
 
 diesel = { version = "1.0.0", features = ["postgres"] }
 diesel_migrations = { version = "1.0.0", features = ["postgres"] }

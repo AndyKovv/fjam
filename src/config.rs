@@ -23,4 +23,9 @@ mod config_tests {
         let expected_url = "postgres://fjam:fjam@localhost/fjam";
         assert_eq!(postgres_url, expected_url);
     }
+
+    #[test]
+    fn test_should_create_postgres_url_from_created_file() {
+        
+    }
 }
