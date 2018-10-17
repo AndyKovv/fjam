@@ -1,4 +1,5 @@
 
+extern crate dotenv;
 extern crate gotham;
 extern crate borrow_bag;
 extern crate serde;
@@ -20,6 +21,7 @@ extern crate serde_derive;
 #[macro_use]
 extern crate diesel;
 
+pub mod test_utils;
 pub mod user;
 pub mod schema;
 pub mod config;
