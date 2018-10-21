@@ -1,4 +1,4 @@
-
+extern crate bcrypt;
 extern crate dotenv;
 extern crate gotham;
 extern crate borrow_bag;
