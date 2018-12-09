@@ -7,3 +7,5 @@ Cargo.lock
 /temp
 env
 .env
+target/*
+*/target/

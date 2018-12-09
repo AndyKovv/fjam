@@ -1,7 +1,12 @@
+#[macro_use]
+extern crate log;
+
 extern crate hyper;
 extern crate diesel;
 extern crate gotham;
 extern crate fjam;
+
+use std::sync::Once;
 
 use diesel::pg::PgConnection;
 use hyper::StatusCode;
@@ -14,7 +19,6 @@ use gotham::router::builder::*;
 use fjam::user::core::{UserIdExtractor, UserProfile};
 use fjam::middlewares::{create_postgres_middleware, DieselMiddleware};
 use fjam::config::Config;
-
 
 
 /// Create application router
@@ -33,8 +37,9 @@ fn router(middleware: DieselMiddleware<PgConnection>) -> Router {
 }
 
 fn main() {
-    let url = Config::get_postgress_connection_url();
-    create_postgres_middleware(&url);
+    // let connection = PG_POOL.get();
+    // assert!(connection.is_ok());
+    // create_postgres_middleware(&url);
 }
 
 #[cfg(test)]
@@ -48,7 +53,7 @@ mod tests {
         let middleware = create_postgres_middleware(&url);
         let test_server = TestServer::new(router(middleware)).unwrap();
         let response = test_server.client().get("http://localhost/1234321323").perform().unwrap();
-        assert_eq!(response.status(), StatusCode::Ok);
+        assert_eq!(response.status(), StatusCode::OK);
         // let second = test_server.client().get("http://localhost/user/id/112321312").perform().unwrap();
         // assert_eq!(second.status(), StatusCode::Ok);
     }

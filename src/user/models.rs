@@ -5,17 +5,17 @@ use schema::{user_profiles, users};
 #[derive(Debug, Queryable)]
 pub struct User {
     // Queriable
-    id: usize,
-    email: String,
-    password: String,
+    pub id: i32,
+    pub email: String,
+    pub password: String,
 
 }
 
-#[derive(Insertable)]
+#[derive(Debug, Insertable)]
 #[table_name="users"]
-pub struct NewUser<'a> {
-    pub email: &'a str,
-    pub password: &'a str,
+pub struct NewUser {
+    pub email: String,
+    pub password: String,
 }
 
 #[derive(Debug, Queryable)]
@@ -30,9 +30,9 @@ pub struct UserProfile {
 #[derive(Debug, Insertable, Associations, PartialEq)]
 #[belongs_to(User)]
 #[table_name="user_profiles"]
-pub struct NewUserProfile<'a> {
+pub struct NewUserProfile {
     // Structure for create new user profile in database
-    pub user_id: &'a i32,
-    pub name: &'a str,
-    pub second_name: &'a str,
+    pub user_id: i32,
+    pub name: String,
+    pub second_name: String,
 }

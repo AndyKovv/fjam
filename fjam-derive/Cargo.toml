@@ -1,0 +1,11 @@
+[package]
+name = "fjam-derive"
+version = "0.0.1"
+authors = ["Andriy Kovalov <andy.kovv@gmail.com>"]
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = { version = "0.15.15", features = ["full", "extra-traits"] }
+quote = "0.6"

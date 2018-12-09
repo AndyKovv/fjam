@@ -5,10 +5,16 @@ use diesel::prelude::*;
 use diesel::pg::PgConnection;
 use schema::user_profiles;
 
+#[derive(Debug)]
+pub struct User {
+    /* User structure  */
+
+}
+
 #[derive(Deserialize, StateData, StaticResponseExtender)]
 pub struct UserIdExtractor {
     id: usize,
-}
+} 
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct UserProfile {
