@@ -1,8 +1,7 @@
 
-use std::io;
 use mime;
 use gotham::handler::{Handler, NewHandler, HandlerFuture};
-use gotham::http::response::create_response;
+use gotham::helpers::http::response::create_response;
 use gotham::state::State;
 use futures::future;
 use hyper::StatusCode;
@@ -14,8 +13,9 @@ impl Handler for UserProfile {
         let res = {
             create_response(
                 &state,
-                StatusCode::Ok,
-                Some(("some".to_string().into_bytes(), mime::TEXT_PLAIN)),
+                StatusCode::OK,
+                mime::TEXT_PLAIN,
+                "some".to_string().into_bytes(),
             )
         };
         Box::new(future::ok((state, res)))
@@ -24,7 +24,7 @@ impl Handler for UserProfile {
 
 impl NewHandler for UserProfile {
     type Instance = Self;
-    fn new_handler(&self) -> io::Result<Self::Instance> {
+    fn new_handler(&self) -> std::result::Result<Self::Instance, gotham::error::Error> {
         Ok(self.clone())
     }
 }

@@ -1,10 +1,10 @@
 postgres:
   image: postgres:latest
   environment:
-    POSTGRES_DB: "fjam"
-    POSTGRES_USER: "fjam"
-    POSTGRES_PASS: "fjam"
-    PGDATA: "/data"
+    POSTGRES_DB: fjam
+    POSTGRES_USER: fjam
+    POSTGRES_PASSWORD: fjam
+    PGDATA: /data
   ports:
     - "5432:5432"
   restart: always
