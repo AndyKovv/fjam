@@ -6,7 +6,6 @@ use quote::{quote};
 extern crate proc_macro;
 use proc_macro::TokenStream;
 
-
 #[proc_macro_derive(ToMessagePack)]
 pub fn derive_to_message_pack(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -24,11 +23,16 @@ pub fn derive_to_message_pack(input: TokenStream) -> TokenStream {
             }
 
             // Convert from u8 vector to chosen struct
-            fn from_message_pack(data: &std::vec::Vec<u8>) -> Self {
+            fn from_message_pack(data: &std::vec::Vec<u8>) -> Result<Box<Self>, CommonConvertError> {
                 let mut bytes = rmps::Deserializer::new(&data[..]);
-                let raw_json_string: String = Deserialize::deserialize(&mut bytes).unwrap();
-                let dto: Self = serde_json::from_str(&raw_json_string).unwrap();
-                dto
+                let raw_json_string: String = match Deserialize::deserialize(&mut bytes) {
+                    Ok(data) => data,
+                    Err(_) => return Err(CommonConvertError::convert_error())
+                };
+                match serde_json::from_str::<Self>(&raw_json_string) {
+                    Ok(dto) => Ok(Box::new(dto)),
+                    Err(_) => Err(CommonConvertError::convert_error())
+                }
             }
         }
     };
