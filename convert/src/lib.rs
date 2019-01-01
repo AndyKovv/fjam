@@ -7,6 +7,7 @@ pub mod errors;
 
 pub use self::errors::CommonConvertError;
 
+
 pub trait ToMessagePack {
 
     fn convert(&self) -> std::vec::Vec<u8>;

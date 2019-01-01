@@ -3,6 +3,38 @@
 
 use std::error::Error;
 use std::fmt::{Display, Formatter, Result};
+use hyper::{StatusCode};
+use common::common_api_errors::HasStatusCode;
+
+impl HasStatusCode for EmailExistError {
+    fn status_code(&self) -> StatusCode {
+        StatusCode::BAD_REQUEST
+    }
+}
+
+impl HasStatusCode for PasswordCryptError {
+    fn status_code(&self) -> StatusCode {
+        StatusCode::BAD_REQUEST
+    }
+}
+
+impl HasStatusCode for EmailValidationError {
+    fn status_code(&self) -> StatusCode {
+        StatusCode::BAD_REQUEST
+    }
+}
+
+impl HasStatusCode for PasswordInvalidError {
+    fn status_code(&self) -> StatusCode {
+        StatusCode::BAD_REQUEST
+    }
+}
+
+impl HasStatusCode for std::error::Error + 'static  {
+    fn status_code(&self) -> StatusCode {
+        StatusCode::BAD_REQUEST
+    }
+}
 
 #[derive(Debug)]
 pub struct EmailExistError {
@@ -18,6 +50,7 @@ impl EmailExistError {
         }
     }
 }
+
 
 impl Display for EmailExistError {
     fn fmt(&self, f: &mut Formatter) -> Result {
