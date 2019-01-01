@@ -1,6 +1,3 @@
-#![feature(extern_crate_item_prelude)]
-#![feature(proc_macro)]
-
 extern crate bcrypt;
 extern crate dotenv;
 extern crate gotham;
@@ -40,3 +37,4 @@ pub mod config;
 pub mod middlewares;
 pub mod common;
 pub mod routes;
+pub mod auth_middleware;

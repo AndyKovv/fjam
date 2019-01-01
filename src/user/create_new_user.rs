@@ -11,8 +11,16 @@ use user::models::NewUser;
 use fjam_derive::integration_test;
 use user::password_manager::PasswordManager;
 use user::email_manager::EmailManager;
-use common::common_api_errors::{BasicApiError, Errors};
+use common::common_api_errors::{BasicApiError, Errors, HasStatusCode};
 use std::error::Error;
+use hyper::{StatusCode};
+
+impl HasStatusCode for diesel::result::Error {
+    fn status_code(&self) -> StatusCode {
+        StatusCode::BAD_REQUEST
+    }
+}
+
 
 /// New user implementation.
 /// Use NewUser for create new user.
@@ -20,7 +28,7 @@ use std::error::Error;
 /// v 0.1.0 -> Implement search usert email in cache, like key:value, where key -> email, value -> password
 pub trait NewDBUser {
     fn new<S: Into<String>>(user_email: S, user_password: S) -> Self;
-    fn create_new_user(&self) -> Result<i32, Errors>;
+    fn create_new_user(&self) -> Result<i32, Box<BasicApiError>>;
 }
 
 impl NewDBUser for NewUser {
@@ -36,7 +44,7 @@ impl NewDBUser for NewUser {
 
     /// Method create new user in database
     /// Use this method only for add (create) new user in postgres database
-    fn create_new_user(&self) -> Result<i32, Errors> {
+    fn create_new_user(&self) -> Result<i32, Box<BasicApiError>> {
         let mut email_manager = EmailManager::new(&self.email);
         email_manager.exist()?;
         let password_manager = PasswordManager::new(&self.password).create_hash()?;
@@ -52,7 +60,7 @@ impl NewDBUser for NewUser {
         match user_id {
             Ok(ids) => Ok(ids[0]),
             Err(err) => Err(
-                Errors::ApiError(BasicApiError::new(err))
+                BasicApiError::new(err)
             )
         }
     }

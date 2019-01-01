@@ -1,5 +1,5 @@
 #![recursion_limit="128"]
-#![feature(extern_crate_item_prelude)]
+
 use syn::{parse_macro_input, DeriveInput};
 use quote::{quote};
 
@@ -13,6 +13,7 @@ pub fn derive_to_message_pack(input: TokenStream) -> TokenStream {
     // TODO add convert_from method from deserialize from message pack to Struct
     let expanded = quote!{
         use serde::{Serialize, Deserialize};
+         use convert::CommonConvertError;
         impl ToMessagePack for #name {
             // Convert method should return vector with message pack payload in <u8>
             fn convert(&self) -> std::vec::Vec<u8> {

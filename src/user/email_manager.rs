@@ -10,7 +10,7 @@ use fjam_derive::integration_test;
 use postgres_connection::pool;
 use regex::Regex;
 use user::errors::{EmailValidationError, EmailExistError};
-use common::common_api_errors::BasicApiError;
+use common::common_api_errors::{BasicApiError};
 
 lazy_static! {
     // Perform a simple regex match to validate email
@@ -38,7 +38,7 @@ impl EmailManager {
         }
     }
 
-    pub fn valid(&mut self) -> Result<bool, BasicApiError> {
+    pub fn valid(&mut self) -> Result<bool, Box<BasicApiError>> {
         /* Method should validate income email via regex*/
         match EMAIL_REGEX.is_match(&self.email) {
             true => {
@@ -51,7 +51,7 @@ impl EmailManager {
         }
     }
 
-    pub fn exist(&mut self) -> Result<bool, BasicApiError> {
+    pub fn exist(&mut self) -> Result<bool, Box<BasicApiError>> {
         /* Method should check email exist in database */
         self.valid()?;
         let conn = pool().get().unwrap();

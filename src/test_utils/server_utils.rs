@@ -11,3 +11,9 @@ use routes::router;
 pub fn run_test_server() -> TestServer {
     TestServer::new(router()).unwrap()
 }
+
+/// Create url for make request to test server
+pub fn get_url(url: &str) -> String {
+    let host = "http://localhost";
+    format!("{}{}", host, url)
+}

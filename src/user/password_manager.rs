@@ -3,7 +3,7 @@
 
 use bcrypt::{DEFAULT_COST, hash, verify};
 use user::errors::{PasswordCryptError, PasswordInvalidError};
-use common::common_api_errors::BasicApiError;
+use common::common_api_errors::{BasicApiError, HasStatusCode};
 
 /// Sructure for manage password.
 /// It's implement check password rules, like: length, strong, etc..
@@ -53,7 +53,7 @@ impl<'a> PasswordManager<'a> {
         }
     }
 
-    pub fn create_hash(mut self) -> Result<Self, BasicApiError> {
+    pub fn create_hash(mut self) -> Result<Self, Box<BasicApiError>> {
         // Method should create hash from income password
          match hash(&self.password, DEFAULT_COST) {
             Ok(hash_data) => {
@@ -67,7 +67,7 @@ impl<'a> PasswordManager<'a> {
         }
     }
 
-    pub fn validate_hash(mut self) -> Result<Self, BasicApiError>{
+    pub fn validate_hash(mut self) -> Result<Self, Box<BasicApiError>>{
         // Procedure should validate hash with income password 
         match verify(&self.password, &self.hash) {
             Ok(true) => {
